@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Estudiantes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <h2>Lista de Estudiantes</h2>
+    <button onclick="window.location.href='/nuevo_estudiante'" class="btn_nuevo">Agregar Estudiante</button>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>No. Control</th>
+                <th>Nombre</th>
+                <th>Apellido Paterno</th>
+                <th>Apellido Materno</th>
+                <th>Semestre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-estudiantes">
+            
+        </tbody>
+    </table>
+
+    <script>
+        async function obtenerEstudiantes() {
+            try {
+                const response = await fetch('/estudiantes');
+                const estudiantes = await response.json();
+                const tabla = document.getElementById('tabla-estudiantes');
+                tabla.innerHTML = '';
+
+                estudiantes.forEach(est => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${est.no_control}</td>
+                        <td>${est.nombre}</td>
+                        <td>${est.ap_paterno}</td>
+                        <td>${est.ap_materno}</td>
+                        <td>${est.semestre}</td>
+                        <td>
+                            <button onclick="eliminarEstudiante('${est.no_control}')" class="btn_eliminar">Eliminar</button>
+                            <button onclick="editarEstudiante('${est.no_control}')" class="btn_editar">Editar</button>
+                        </td>
+                    `;
+                    tabla.appendChild(fila);
+                });
+            } catch (error) {
+                console.error('Error obteniendo estudiantes:', error);
+            }
+        }
+
+        function editarEstudiante(no_control) {
+            window.location.href = `/editar_estudiante/${no_control}`;
+        }
+
+        async function eliminarEstudiante(no_control) {
+            const response = await fetch(`/eliminar_estudiante/${no_control}`, {
+                method: 'DELETE'
+            });
+            const result = await response.json();
+            alert(result.mensaje);
+            obtenerEstudiantes();
+        }
+
+
+
+        window.onload = obtenerEstudiantes;
+    </script>
+
+</body>
+</html>

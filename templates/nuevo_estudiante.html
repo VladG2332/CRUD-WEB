@@ -1,0 +1,46 @@
+<!-- nuevo_estudiante.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Nuevo Estudiante</title>
+</head>
+<body>
+    <h2>Agregar Nuevo Estudiante</h2>
+    <form id="form-agregar">
+        <label for="no_control">No. Control:</label><br>
+        <input type="text" id="no_control" name="no_control"><br><br>
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre"><br><br>
+        <label for="ap_paterno">Apellido Paterno:</label><br>
+        <input type="text" id="ap_paterno" name="ap_paterno"><br><br>
+        <label for="ap_materno">Apellido Materno:</label><br>
+        <input type="text" id="ap_materno" name="ap_materno"><br><br>
+        <label for="semestre">Semestre:</label><br>
+        <input type="number" id="semestre" name="semestre"><br><br>
+        <div class="contenedor_botones">
+            <a class="btn_cancelar" href="/">Cancelar</a>
+            <button type="submit">Agregar Estudiante</button>
+        </div>
+        
+    </form>
+
+    
+
+    <script>
+        document.getElementById('form-agregar').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/agregar_estudiante', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            alert(result.mensaje);
+            window.location.href = '/';
+        });
+    </script>
+</body>
+</html>

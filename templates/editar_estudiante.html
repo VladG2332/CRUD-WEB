@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Editar Estudiante</title>
+</head>
+<body>
+    <h2>Editar Estudiante</h2>
+    <form id="form-editar">
+        <label for="no_control">No. Control:</label><br>
+        <input type="text" id="no_control" name="no_control" value="{{ estudiante.no_control }}" readonly><br><br>
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre" value="{{ estudiante.nombre }}"><br><br>
+        <label for="ap_paterno">Apellido Paterno:</label><br>
+        <input type="text" id="ap_paterno" name="ap_paterno" value="{{ estudiante.ap_paterno }}"><br><br>
+        <label for="ap_materno">Apellido Materno:</label><br>
+        <input type="text" id="ap_materno" name="ap_materno" value="{{ estudiante.ap_materno }}"><br><br>
+        <label for="semestre">Semestre:</label><br>
+        <input type="number" id="semestre" name="semestre" value="{{ estudiante.semestre }}"><br><br>
+        <div class="contenedor_botones">
+            <a class="btn_cancelar" href="/">Cancelar</a>
+            <button type="submit">Actualizar Estudiante</button>
+        </div>
+        
+    </form>
+
+
+    <script>
+        document.getElementById('form-editar').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/actualizar_estudiante', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            alert(result.mensaje);
+            window.location.href = '/';
+        });
+    </script>
+</body>
+</html>
