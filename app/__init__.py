@@ -10,8 +10,12 @@ def create_app(config_class=Config):
 
     db.init_app(app)
 
+    # Importar y registrar las rutas
+    from .routes import estudiantes_bp
+    app.register_blueprint(estudiantes_bp)
+
+    # Crear tablas en la base de datos
     with app.app_context():
-        from . import routes
         db.create_all()
 
     return app
