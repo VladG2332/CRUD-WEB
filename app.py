@@ -38,7 +38,7 @@ def nuevo_estudiante():
 
 @app.route('/agregar_estudiante', methods=['POST'])
 def agregar_estudiante():
-    data = request.form
+    data = request.get_json()
     nuevo_estudiante = Estudiante(
         no_control=data['no_control'],
         nombre=data['nombre'],
@@ -50,7 +50,6 @@ def agregar_estudiante():
     db.session.commit()
     return jsonify({'mensaje': 'Estudiante agregado con éxito'})
 
-
 # Ruta para eliminar estudiante
 @app.route('/eliminar_estudiante/<no_control>', methods=['DELETE'])
 def eliminar_estudiante(no_control):
@@ -60,7 +59,6 @@ def eliminar_estudiante(no_control):
         db.session.commit()
         return jsonify({'mensaje': 'Estudiante eliminado'})
     return jsonify({'mensaje': 'Estudiante no encontrado'}), 404
-
 
 # Ruta para editar estudiante
 @app.route('/editar_estudiante/<no_control>', methods=['GET'])
@@ -72,7 +70,7 @@ def editar_estudiante(no_control):
 
 @app.route('/actualizar_estudiante', methods=['POST'])
 def actualizar_estudiante():
-    data = request.form
+    data = request.get_json()
     estudiante = Estudiante.query.filter_by(no_control=data['no_control']).first()
     if estudiante:
         estudiante.nombre = data['nombre']
@@ -82,8 +80,6 @@ def actualizar_estudiante():
         db.session.commit()
         return jsonify({'mensaje': 'Estudiante actualizado'})
     return jsonify({'mensaje': 'Estudiante no encontrado'}), 404
-
-
 
 @app.route('/obtener_estudiante/<no_control>', methods=['GET'])
 def obtener_estudiante(no_control):
@@ -97,7 +93,6 @@ def obtener_estudiante(no_control):
             'semestre': estudiante.semestre
         })
     return jsonify({'mensaje': 'Estudiante no encontrado'}), 404
-
 
 # Ruta principal
 @app.route('/')

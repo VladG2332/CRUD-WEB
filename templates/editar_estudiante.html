@@ -23,17 +23,24 @@
             <a class="btn_cancelar" href="/">Cancelar</a>
             <button type="submit">Actualizar Estudiante</button>
         </div>
-        
     </form>
-
 
     <script>
         document.getElementById('form-editar').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const formData = new FormData(this);
+            const formData = {
+                no_control: document.getElementById('no_control').value,
+                nombre: document.getElementById('nombre').value,
+                ap_paterno: document.getElementById('ap_paterno').value,
+                ap_materno: document.getElementById('ap_materno').value,
+                semestre: parseInt(document.getElementById('semestre').value)
+            };
             const response = await fetch('/actualizar_estudiante', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
             });
             const result = await response.json();
             alert(result.mensaje);

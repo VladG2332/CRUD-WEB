@@ -7,25 +7,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-
     <h2>Lista de Estudiantes</h2>
-    <button onclick="window.location.href='/nuevo_estudiante'" class="btn_nuevo">Agregar Estudiante</button>
     
-    <table>
-        <thead>
-            <tr>
-                <th>No. Control</th>
-                <th>Nombre</th>
-                <th>Apellido Paterno</th>
-                <th>Apellido Materno</th>
-                <th>Semestre</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="tabla-estudiantes">
-            
-        </tbody>
-    </table>
+    
+    <div class="contenedor_tabla">
+        <button onclick="window.location.href='/nuevo_estudiante'" class="btn_nuevo">Agregar Estudiante</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>No. Control</th>
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Semestre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-estudiantes">
+            </tbody>
+        </table>
+    </div>
 
     <script>
         async function obtenerEstudiantes() {
@@ -44,8 +45,11 @@
                         <td>${est.ap_materno}</td>
                         <td>${est.semestre}</td>
                         <td>
-                            <button onclick="eliminarEstudiante('${est.no_control}')" class="btn_eliminar">Eliminar</button>
-                            <button onclick="editarEstudiante('${est.no_control}')" class="btn_editar">Editar</button>
+                            <div class="contenedor_botones">
+                                <button onclick="eliminarEstudiante('${est.no_control}')" class="btn_acciones btn_eliminar">Eliminar</button>
+                                <button onclick="editarEstudiante('${est.no_control}')" class="btn_acciones btn_editar">Editar</button>
+                            </div>
+                            
                         </td>
                     `;
                     tabla.appendChild(fila);
@@ -68,10 +72,7 @@
             obtenerEstudiantes();
         }
 
-
-
         window.onload = obtenerEstudiantes;
     </script>
-
 </body>
 </html>
